@@ -1,6 +1,11 @@
 const inquirer = require("inquirer");
 const fs = require("fs");
 
+//data getting pulled from library
+const Engineer = require(".lib/engineer.js");
+const Manager = require(".lib/Manager.js");
+const Intern = require(".lib/Intern");
+
 const employeeArray = [];
 
 const questionsPrompt = function () {
@@ -32,7 +37,26 @@ const questionsPrompt = function () {
     ])
     .then((answers) => {
         if (answers.role == "Intern") {
-            
+            inquirer
+                .prompt({
+                    type: "input",
+                    name: "github",
+                    message: "Please enter your GitHub username:",
+                })
+                .then((roleInfo) => {
+                    employeeArray.push(
+                        new Engineer(
+                            answers.role,
+                            answers.name,
+                            answers.github,
+                            answers.id,
+                            roleInfo.github
+
+                        )
+                    );
+                    addEmp();
+                    
+                })
         }
     })
 }
