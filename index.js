@@ -36,27 +36,86 @@ const questionsPrompt = function () {
         
     ])
     .then((answers) => {
-        if (answers.role == "Intern") {
-            inquirer
+        if (answers.role === "Engineer") {
+            inquirer    
                 .prompt({
                     type: "input",
                     name: "github",
-                    message: "Please enter your GitHub username:",
+                    message: "Please enter your GitHub username?",
                 })
                 .then((roleInfo) => {
-                    employeeArray.push(
+                    employeeArray.push
                         new Engineer(
-                            answers.role,
-                            answers.name,
-                            answers.github,
                             answers.id,
-                            roleInfo.github
-
+                            answers.name,
+                            answers.role,
+                            answers.email,
+                            roleinfo.github
                         )
                     );
                     addEmp();
-                    
-                })
-        }
-    })
+                });
+
+            }else if (answers.role == "Intern") {
+                inquirer
+                    .prompt({
+                        type: "input",
+                        name: "school",
+                        message: "Please list where you go to school:",
+                    })
+                    .then((roleInfo) => {
+                        employeeArray.push(
+                            new Intern(
+                                answers.role,
+                                answers.name,
+                                answers.email,
+                                answers.id,
+                                roleInfo.school
+                            )
+                        );
+                    addEmp();   
+                });
+            }else if (answers.role === "Manager") {
+                inquirer
+                    .prompt({
+                        type: "input",
+                        name: "officeNumber",
+                        message: "Please enter your office number:"
+                    })
+                    .then((roleInfo) => {
+                        employeeArray.push(
+                            new Manager(
+                                answers.role,
+                                answers.id,
+                                answers.name,
+                                answers.email,
+                                roleInfo.officeNumber
+                            )
+                        );
+                        addEmp();
+                    });
+                }
+            });
+};
+
+function addEmp() {
+    inquirer 
+        .prompt({
+            type: "confirm",
+            message: "Would you like to add a new employee?",
+            name: "addEmp"
+        })
+}       .then(function ({ addEmp })) {
+            if (addEmp) {
+                questionsPrompt();
+            }else {
+                }
+            })
+            .catch((err) => {
+                console.log("Error!", err);
+                throw err;
+            });
+        
 }
+
+promptQuestions();
