@@ -1,5 +1,6 @@
 const inquirer = require("inquirer");
 const fs = require("fs");
+const generateHTML = require("./utils/generateHTML");
 
 //data getting pulled from library
 const Engineer = require("./library/engineer.js");
@@ -26,12 +27,8 @@ const startPrompt = function () {
         type: "input",
         name: "email",
         message: "Please enter the manager's email:",
-      },
-      {
-        type: "confirm",
-        name: "addAnother",
-        message: "Would you like to an additional employee?",
-      },
+      }
+
     ])
 
     .then((answers) => {
@@ -43,8 +40,9 @@ const startPrompt = function () {
           answers.officeNumber
         )
       );
-      if (answers.addAnother) {
-      }
+      
+      addEmp();
+
     });
 };
 
@@ -123,7 +121,17 @@ function addEmp() {
       } else {
 
         //if all done, generate HTML file
+        const htmlString = generateHTML(employeeArray);
 
+        fs.writeFile("index.html", htmlString, (err) => {
+            if (err) {
+                console.log(err);
+                return
+            }
+
+            console.log("File Created Successfully!");
+            
+        })
       }
     })
     .catch((err) => {
@@ -132,4 +140,4 @@ function addEmp() {
     });
 }
 
-questionsPrompt();
+startPrompt();
